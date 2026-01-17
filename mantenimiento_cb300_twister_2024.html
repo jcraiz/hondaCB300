@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mantenimiento CB300 Twister 2024</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #e52d27 0%, #b31217 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .km-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .km-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .icon {
+            font-size: 1.5em;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        input[type="number"] {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px;
+            font-size: 1.2em;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .current-km {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .current-km h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .current-km .km-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .maintenance-alert {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .alert-ok {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+        
+        .maintenance-alert h3 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .task-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .task-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .task-item strong {
+            display: block;
+            color: #667eea;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        
+        .task-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .km-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .schedule-table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .schedule-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .schedule-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .schedule-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-done {
+            background: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        
+        .status-pending {
+            background: #ffc107;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        
+        .status-upcoming {
+            background: #17a2b8;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .info-box h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .input-group {
+                flex-direction: column;
+            }
+            
+            input[type="number"] {
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .schedule-table {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏍️ Honda CB300 Twister 2024</h1>
+            <p>Plan de Mantenimiento Inteligente</p>
+        </div>
+        
+        <div class="content">
+            <div class="km-section">
+                <h2><span class="icon">📊</span> Actualizar Kilometraje</h2>
+                <div class="input-group">
+                    <input type="number" id="kmInput" placeholder="Ingresa el kilometraje actual" min="0" step="1">
+                    <button class="btn btn-primary" onclick="updateKm()">Actualizar Kilometraje</button>
+                </div>
+                
+                <div class="current-km" id="currentKmDisplay">
+                    <h3>Kilometraje Actual</h3>
+                    <div class="km-value" id="kmValue">1073 km</div>
+                    <p style="color: #666; margin-top: 10px;">Última actualización: <span id="lastUpdate">Hoy</span></p>
+                </div>
+            </div>
+            
+            <div id="maintenanceAlert"></div>
+            
+            <div class="info-box">
+                <h4>📚 ¿Qué es esto?</h4>
+                <p>Esta aplicación te ayuda a mantener tu moto en perfecto estado. Cada semana, ingresa el kilometraje que marca tu moto y te diré exactamente qué mantenimientos debes hacer.</p>
+            </div>
+            
+            <h2 style="margin-top: 40px; color: #333;">📋 Historial de Mantenimientos</h2>
+            <table class="schedule-table" id="scheduleTable">
+                <thead>
+                    <tr>
+                        <th>Kilometraje</th>
+                        <th>Tareas de Mantenimiento</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        // Datos de mantenimiento según el manual oficial CB300F Twister
+        const maintenanceSchedule = {
+            1000: [
+                {
+                    task: "Primer servicio (1000 km)",
+                    description: "Cambio de aceite de motor y filtro, inspección general del vehículo, ajuste de cadena, verificación de frenos y neumáticos.",
+                    priority: "high"
+                }
+            ],
+            6000: [
+                {
+                    task: "Cambio de aceite de motor",
+                    description: "Reemplaza el aceite del motor con Honda GN4 10W-30 (1.5 litros con cambio de filtro). El aceite lubrica el motor y evita desgaste.",
+                    priority: "high"
+                },
+                {
+                    task: "Inspeccionar filtro de aire",
+                    description: "Revisar que el filtro de aire esté limpio. Si está sucio, reduce el rendimiento del motor.",
+                    priority: "medium"
+                },
+                {
+                    task: "Ajustar cadena de transmisión",
+                    description: "La cadena debe tener la tensión correcta (25-35mm de holgura). Si está muy floja o muy tensa, puede dañarse.",
+                    priority: "high"
+                },
+                {
+                    task: "Revisar nivel de líquido de frenos",
+                    description: "Verificar que el nivel del líquido de frenos esté entre las marcas MIN y MAX. Si está bajo, los frenos pierden eficacia.",
+                    priority: "high"
+                },
+                {
+                    task: "Inspeccionar pastillas de freno",
+                    description: "Revisar el grosor de las pastillas. Si están gastadas, los frenos no funcionan bien.",
+                    priority: "high"
+                },
+                {
+                    task: "Verificar presión de neumáticos",
+                    description: "Delantero: 2.0 kg/cm² (29 psi), Trasero: 2.25 kg/cm² (32 psi). La presión correcta mejora el agarre y reduce el desgaste.",
+                    priority: "medium"
+                }
+            ],
+            12000: [
+                {
+                    task: "Cambio de aceite de motor y filtro",
+                    description: "Cambio completo de aceite (1.5L) y reemplazo del filtro de aceite. Esto mantiene el motor limpio y protegido.",
+                    priority: "high"
+                },
+                {
+                    task: "Reemplazar filtro de aire",
+                    description: "Cambiar el filtro de aire por uno nuevo. Un filtro sucio hace que el motor consuma más gasolina.",
+                    priority: "medium"
+                },
+                {
+                    task: "Limpiar respiradero del cárter",
+                    description: "Limpieza del sistema de ventilación del motor para mantener la presión correcta.",
+                    priority: "medium"
+                },
+                {
+                    task: "Ajustar cadena y lubricar",
+                    description: "Ajustar tensión de la cadena y aplicar lubricante específico para cadenas de moto.",
+                    priority: "high"
+                },
+                {
+                    task: "Revisar sistema de frenos completo",
+                    description: "Inspección completa: líquido, pastillas, discos y funcionamiento general de ambos frenos.",
+                    priority: "high"
+                },
+                {
+                    task: "Inspeccionar neumáticos",
+                    description: "Revisar desgaste, presión y buscar cortes o daños en las llantas.",
+                    priority: "medium"
+                },
+                {
+                    task: "Verificar luces y bocina",
+                    description: "Comprobar que todas las luces (faros, direccionales, freno) y la bocina funcionen correctamente.",
+                    priority: "medium"
+                },
+                {
+                    task: "Revisar tuercas y pernos",
+                    description: "Verificar que todos los tornillos importantes estén apretados correctamente.",
+                    priority: "medium"
+                }
+            ],
+            18000: [
+                {
+                    task: "Cambio de aceite de motor",
+                    description: "Cambio de aceite del motor con Honda GN4 10W-30 (1.5 litros).",
+                    priority: "high"
+                },
+                {
+                    task: "Ajustar cadena de transmisión",
+                    description: "Ajustar tensión y lubricar la cadena.",
+                    priority: "high"
+                },
+                {
+                    task: "Revisar sistema de frenos",
+                    description: "Inspeccionar líquido y pastillas de freno.",
+                    priority: "high"
+                },
+                {
+                    task: "Verificar presión de neumáticos",
+                    description: "Ajustar presión según especificaciones.",
+                    priority: "medium"
+                }
+            ],
+            24000: [
+                {
+                    task: "Servicio mayor (24000 km)",
+                    description: "Cambio de aceite y filtro, reemplazo de filtro de aire, inspección de válvulas, cambio de bujía, revisión completa de frenos, inspección de suspensión y dirección.",
+                    priority: "high"
+                },
+                {
+                    task: "Cambiar bujía",
+                    description: "Reemplazar la bujía de encendido. Una bujía nueva mejora el arranque y el rendimiento del motor.",
+                    priority: "high"
+                },
+                {
+                    task: "Cambiar líquido de frenos",
+                    description: "Reemplazar completamente el líquido de frenos (cada 2 años o 24000 km). El líquido viejo pierde efectividad.",
+                    priority: "high"
+                },
+                {
+                    task: "Revisar holgura de válvulas",
+                    description: "Verificar y ajustar la holgura de las válvulas del motor. Importante para el buen funcionamiento del motor.",
+                    priority: "high"
+                },
+                {
+                    task: "Inspeccionar cadena de transmisión",
+                    description: "Revisar desgaste de la cadena. Si está muy gastada, debe reemplazarse junto con los piñones.",
+                    priority: "high"
+                }
+            ],
+            30000: [
+                {
+                    task: "Cambio de aceite de motor",
+                    description: "Cambio de aceite del motor (1.5L).",
+                    priority: "high"
+                },
+                {
+                    task: "Ajustar y lubricar cadena",
+                    description: "Ajuste de tensión y lubricación de cadena.",
+                    priority: "high"
+                },
+                {
+                    task: "Revisar sistema de frenos",
+                    description: "Inspección completa del sistema de frenos.",
+                    priority: "high"
+                }
+            ],
+            36000: [
+                {
+                    task: "Servicio completo (36000 km)",
+                    description: "Cambio de aceite y filtro, reemplazo de filtro de aire, revisión de frenos, inspección general completa.",
+                    priority: "high"
+                }
+            ]
+        };
+        
+        // Mantenimientos cada 1000 km (lubricación de cadena)
+        const everyThousandKm = {
+            task: "Lubricar cadena de transmisión",
+            description: "Limpiar y lubricar la cadena cada 1000 km. Usa un lubricante especial para cadenas de moto. Una cadena bien lubricada dura más y la moto funciona mejor.",
+            priority: "medium"
+        };
+        
+        // Inicializar con el kilometraje actual
+        let currentKm = 1073;
+        let lastUpdateDate = new Date();
+        
+        // Cargar datos del localStorage si existen
+        function loadData() {
+            const savedKm = localStorage.getItem('cb300km');
+            const savedDate = localStorage.getItem('cb300date');
+            
+            if (savedKm) {
+                currentKm = parseInt(savedKm);
+            }
+            if (savedDate) {
+                lastUpdateDate = new Date(savedDate);
+            }
+            
+            updateDisplay();
+        }
+        
+        // Guardar datos en localStorage
+        function saveData() {
+            localStorage.setItem('cb300km', currentKm);
+            localStorage.setItem('cb300date', lastUpdateDate.toISOString());
+        }
+        
+        // Actualizar kilometraje
+        function updateKm() {
+            const input = document.getElementById('kmInput');
+            const newKm = parseInt(input.value);
+            
+            if (isNaN(newKm) || newKm < 0) {
+                alert('Por favor ingresa un kilometraje válido');
+                return;
+            }
+            
+            if (newKm < currentKm) {
+                if (!confirm('El nuevo kilometraje es menor al actual. ¿Estás seguro?')) {
+                    return;
+                }
+            }
+            
+            currentKm = newKm;
+            lastUpdateDate = new Date();
+            saveData();
+            updateDisplay();
+            input.value = '';
+        }
+        
+        // Actualizar visualización
+        function updateDisplay() {
+            // Actualizar kilometraje actual
+            document.getElementById('kmValue').textContent = currentKm.toLocaleString() + ' km';
+            document.getElementById('lastUpdate').textContent = formatDate(lastUpdateDate);
+            
+            // Calcular próximos mantenimientos
+            checkUpcomingMaintenance();
+            
+            // Actualizar tabla de historial
+            updateScheduleTable();
+        }
+        
+        // Formatear fecha
+        function formatDate(date) {
+            const now = new Date();
+            const diffTime = now - date;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) return 'Hoy';
+            if (diffDays === 1) return 'Ayer';
+            if (diffDays < 7) return `Hace ${diffDays} días`;
+            
+            return date.toLocaleDateString('es-ES', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+        
+        // Verificar próximos mantenimientos
+        function checkUpcomingMaintenance() {
+            const alertDiv = document.getElementById('maintenanceAlert');
+            const nextMaintenance = findNextMaintenance();
+            
+            if (!nextMaintenance) {
+                alertDiv.innerHTML = `
+                    <div class="maintenance-alert alert-ok">
+                        <h3>✅ Todo en orden</h3>
+                        <p>No tienes mantenimientos programados próximamente. Sigue actualizando tu kilometraje semanalmente.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const kmUntilNext = nextMaintenance.km - currentKm;
+            let alertClass = 'alert-ok';
+            let icon = '📅';
+            let title = 'Próximo Mantenimiento';
+            
+            if (kmUntilNext <= 0) {
+                alertClass = 'alert-danger';
+                icon = '⚠️';
+                title = '¡Mantenimiento Vencido!';
+            } else if (kmUntilNext <= 500) {
+                alertClass = 'alert-warning';
+                icon = '⏰';
+                title = '¡Mantenimiento Próximo!';
+            }
+            
+            let tasksHTML = nextMaintenance.tasks.map(task => `
+                <li class="task-item">
+                    <strong>${task.task}</strong>
+                    <p>${task.description}</p>
+                    <span class="km-badge">A los ${nextMaintenance.km.toLocaleString()} km</span>
+                </li>
+            `).join('');
+            
+            // Agregar recordatorio de lubricación de cadena si corresponde
+            const nextChainLube = Math.ceil(currentKm / 1000) * 1000;
+            if (nextChainLube < nextMaintenance.km && (nextChainLube - currentKm) <= 500) {
+                tasksHTML = `
+                    <li class="task-item">
+                        <strong>${everyThousandKm.task}</strong>
+                        <p>${everyThousandKm.description}</p>
+                        <span class="km-badge">A los ${nextChainLube.toLocaleString()} km</span>
+                    </li>
+                ` + tasksHTML;
+            }
+            
+            let message = '';
+            if (kmUntilNext <= 0) {
+                message = `<p style="font-size: 1.1em; margin-bottom: 15px;">⚠️ <strong>Tu moto tiene un mantenimiento vencido desde hace ${Math.abs(kmUntilNext)} km.</strong> Es importante realizarlo pronto para evitar daños.</p>`;
+            } else if (kmUntilNext <= 100) {
+                message = `<p style="font-size: 1.1em; margin-bottom: 15px;">Faltan solo <strong>${kmUntilNext} km</strong> para tu próximo mantenimiento. Programa tu cita con el mecánico.</p>`;
+            } else if (kmUntilNext <= 500) {
+                message = `<p style="font-size: 1.1em; margin-bottom: 15px;">Faltan <strong>${kmUntilNext} km</strong> para tu próximo mantenimiento. Es buen momento para planificar.</p>`;
+            } else {
+                message = `<p style="font-size: 1.1em; margin-bottom: 15px;">Faltan <strong>${kmUntilNext} km</strong> para tu próximo mantenimiento.</p>`;
+            }
+            
+            alertDiv.innerHTML = `
+                <div class="maintenance-alert ${alertClass}">
+                    <h3>${icon} ${title}</h3>
+                    ${message}
+                    <ul class="task-list">
+                        ${tasksHTML}
+                    </ul>
+                </div>
+            `;
+        }
+        
+        // Encontrar próximo mantenimiento
+        function findNextMaintenance() {
+            const upcomingKms = Object.keys(maintenanceSchedule)
+                .map(k => parseInt(k))
+                .filter(k => k >= currentKm)
+                .sort((a, b) => a - b);
+            
+            if (upcomingKms.length === 0) {
+                // Buscar el último mantenimiento pasado
+                const lastKm = Math.max(...Object.keys(maintenanceSchedule).map(k => parseInt(k)));
+                return {
+                    km: lastKm,
+                    tasks: maintenanceSchedule[lastKm]
+                };
+            }
+            
+            const nextKm = upcomingKms[0];
+            return {
+                km: nextKm,
+                tasks: maintenanceSchedule[nextKm]
+            };
+        }
+        
+        // Actualizar tabla de historial
+        function updateScheduleTable() {
+            const tbody = document.getElementById('scheduleBody');
+            const allKms = Object.keys(maintenanceSchedule)
+                .map(k => parseInt(k))
+                .sort((a, b) => a - b);
+            
+            let html = '';
+            
+            allKms.forEach(km => {
+                let status = '';
+                let statusClass = '';
+                
+                if (currentKm >= km) {
+                    status = 'Realizado';
+                    statusClass = 'status-done';
+                } else if ((km - currentKm) <= 500) {
+                    status = 'Próximo';
+                    statusClass = 'status-pending';
+                } else {
+                    status = 'Pendiente';
+                    statusClass = 'status-upcoming';
+                }
+                
+                const tasks = maintenanceSchedule[km]
+                    .map(t => t.task)
+                    .join(', ');
+                
+                html += `
+                    <tr>
+                        <td><strong>${km.toLocaleString()} km</strong></td>
+                        <td>${tasks}</td>
+                        <td><span class="${statusClass}">${status}</span></td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+        
+        // Permitir actualizar con Enter
+        document.getElementById('kmInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                updateKm();
+            }
+        });
+        
+        // Cargar datos al iniciar
+        loadData();
+    </script>
+</body>
+</html>
